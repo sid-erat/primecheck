@@ -1,1 +1,42 @@
-checking if this is visible? hello world!
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body, html {
+  height: 100%;
+  display: grid;
+  background: black;
+}
+.center-me {
+  margin: auto;
+  background: black;
+  color: white;
+  width: 50%;
+  font-size: 200%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="center-me">
+
+<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+
+</div>
+
+
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.beginPath();
+ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+ctx.stroke();
+</script>
+
+</body>
+
+</html>
