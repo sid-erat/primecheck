@@ -16,11 +16,13 @@ function drawStuff() {
     context.fillStyle = "black";
     context.textAlign = "center";
     context.fillText(i + 1, x + width / 2, y + width / 2);
+
     x += width + pad;
     if (x > canvas.width - width) {
       y += width + pad;
       x = 0;
     }
+    	
   }
 }
 
@@ -57,29 +59,41 @@ function display_changes() {
 
 function begin_animation() {
   let maxN = Number(document.getElementById("maxN").value) - 1;
-  if (maxN >= 330) {
+  if (maxN >= 1000) {
     alert("Please input smaller values...");
     return;
   }
+  
   gdata = { colors: Array(maxN).fill("green") };
   gdata.colors.unshift("red");
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+//  canvas.height = window.innerHeight;
+  
+  let width = canvas.width/30;
+  let pad = 2;
+  let numrow = Math.floor((canvas.width-pad)/(width+pad))
+  let y = (Math.floor(maxN/numrow)*(width+pad))
+  y += width+pad;
+  canvas.height = y;
+
+  
   drawStuff();
   start();
   setTimeout(display_changes, speed);
 }
 
 function change_color(n, ncolor) {
-  let x = 0,
-    y = 0;
+  let x = 0,y = 0;
   let width = canvas.width / 30;
   let pad = 2;
 
-  for (let i = 0; i < gdata.colors.length; i++) {
-    if (i == n - 1) {
-      pending_changes.push({
-        text: i + 1,
+
+  n = n-1;
+  let numrow = Math.floor((canvas.width-pad)/(width+pad))
+  x = (n%numrow)*(width+pad)
+  y = (Math.floor(n/numrow)*(width+pad))
+  pending_changes.push({
+        text: n + 1,
         txtx: x + width / 2,
         txty: y + width / 2,
         color: ncolor,
@@ -87,14 +101,8 @@ function change_color(n, ncolor) {
         y: y,
         width: width,
       });
-    }
-    x += width + pad;
-    if (x > canvas.width - width) {
-      y += width + pad;
-      x = 0;
-    }
-  }
 }
+
 
 function get_next_prime() {
   for (let i = 0; i < gdata.colors.length; i++) {
