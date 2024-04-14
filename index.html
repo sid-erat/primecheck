@@ -4,37 +4,73 @@
 <style>
 body, html {
   height: 100%;
-  display: grid;
-  background: black;
-}
-.center-me {
-  margin: auto;
-  background: black;
-  color: white;
-  width: 50%;
-  font-size: 200%;
 }
 </style>
 </head>
 
 <body>
 
-<div class="center-me">
-
-<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+<canvas id="scene" width="200" height="100" style="border:1px solid #000000;">
 Your browser does not support the HTML canvas tag.
 </canvas>
 
 
-</div>
 
 
 <script>
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-ctx.beginPath();
-ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-ctx.stroke();
+var scene = document.getElementById("scene");
+var ctx = scene.getContext("2d");
+
+scene.width = window.innerWidth;
+scene.height = window.innerHeight;
+
+var r = 125;
+var g = 175;
+var b = 150;
+
+var theta = 0;
+
+function drawGrid(x, y, width, height, gridCellSize, color, lineWidth = 1) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.lineWidth = lineWidth;
+  ctx.strokeStyle = color;
+
+  for (var lx = x; lx <= x + width; lx += gridCellSize) {
+    ctx.moveTo(lx, y);
+    ctx.lineTo(lx, y + height);
+  }
+
+  for (var ly = y; ly <= y + height; ly += gridCellSize) {
+    ctx.moveTo(x, ly);
+    this.ctx.lineTo(x + width, ly);
+  }
+
+  ctx.stroke();
+  ctx.closePath();
+  ctx.restore();
+}
+
+function main() {
+  r += Math.sin(theta / 32);
+  g += Math.sin(theta / 8);
+  b += Math.sin(theta / 16);
+
+  r %= 255;
+  g %= 255;
+  b %= 255;
+  ctx.clearRect(0, 0, scene.width, scene.height);
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(0, 0, scene.width, scene.height);
+
+  drawGrid(0, 0, scene.width, scene.height, scene.height / 8, `rgb(${r}, ${g}, ${b})`, 1);
+
+  theta++;
+  requestAnimationFrame(main);
+}
+
+main();
+
 </script>
 
 </body>
