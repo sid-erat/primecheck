@@ -123,9 +123,35 @@ function iterate(prime) {
 }
 
 function start() {
+	start_seive1();
+}
+
+function start_seive1() {
   var prime = 2;
   while (prime > 0) {
     iterate(prime);
     prime = get_next_prime();
   }
+}
+function start_seive2() {
+  let nmax = gdata.colors.length;
+  gdata.colors[0]="green";
+  for(let i=1;i<=nmax;i++) {
+	  for(let j=i;j<=nmax;j++) {
+		  let k=i+j+2*i*j;
+		  if (k>nmax) break;
+		  change_color(k,"red");
+		  gdata.colors[k-1]="red"
+	  }
+  }
+  for(let i=1;i<=nmax;i++) {
+	  if (gdata.colors[i-1]=="green") {
+		  let prime = 2*i+1
+		  if (prime <= nmax) {
+			change_color(2*i+1,"orange");
+		   }
+	  }
+  }
+  gdata.colors[1]="orange";
+  change_color(2,"orange");
 }
