@@ -102,22 +102,22 @@ function change_color(n, ncolor) {
    });
 }
 
-function get_next_prime() {
-   for (let i = 0; i < gdata.colors.length; i++) {
-      if (gdata.colors[i] == "green") {
-         return i + 1;
-      }
-   }
-   return -1;
-}
 
-function iterate(prime) {
+function get_next_prime(prime) {
    gdata.colors[prime - 1] = "orange";
    change_color(prime, "orange");
    for (let i = 2 * prime; i <= gdata.colors.length; i += prime) {
       gdata.colors[i - 1] = "red";
       change_color(i, "red");
    }
+
+   for (let i = prime; i < gdata.colors.length; i++) {
+      if (gdata.colors[i] == "green") {
+         return i + 1;
+      }
+   }
+   return -1;
+
 }
 
 function start() {
@@ -127,7 +127,6 @@ function start() {
 function start_sieve1() {
    var prime = 2;
    while (prime > 0) {
-      iterate(prime);
-      prime = get_next_prime();
+      prime = get_next_prime(prime);
    }
 }

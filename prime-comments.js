@@ -107,7 +107,6 @@ function begin_animation() {
    };
    gdata.colors.unshift("red");
    canvas.width = window.innerWidth;
-   //  canvas.height = window.innerHeight;
 
    let width = canvas.width / 30;
    let pad = 2;
@@ -150,31 +149,28 @@ function change_color(n, ncolor) {
 
 //BEGINNING OF SIEVE IMPLEMENTATION
 
+
 /*
-checks for the next smallest number that has not been proven composite 
+(1) marks primes as orange and composites as red. Composites are marked red 
+by iterating through multiples of primes (sieve of Eratosthenes)
+(2) checks for the next smallest number that has not been proven composite 
 (i.e., marked green)
 */
-
-function get_next_prime() {
-   for (let i = 0; i < gdata.colors.length; i++) {
-      if (gdata.colors[i] == "green") {
-         return i + 1;
-      }
-   }
-   return -1;
-}
-
-/*
-marks primes as orange and composites as red. Composites are marked red 
-by iterating through multiples of primes (sieve of Eratosthenes)
-*/
-function iterate(prime) {
+function get_next_prime(prime) {
    gdata.colors[prime - 1] = "orange";
    change_color(prime, "orange");
    for (let i = 2 * prime; i <= gdata.colors.length; i += prime) {
       gdata.colors[i - 1] = "red";
       change_color(i, "red");
    }
+
+   for (let i = prime; i < gdata.colors.length; i++) {
+      if (gdata.colors[i] == "green") {
+         return i + 1;
+      }
+   }
+   return -1;
+
 }
 
 /*
@@ -193,7 +189,6 @@ iterate().
 function start_sieve1() {
    var prime = 2;
    while (prime > 0) {
-      iterate(prime);
-      prime = get_next_prime();
+      prime = get_next_prime(prime);
    }
 }
